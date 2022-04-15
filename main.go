@@ -1,22 +1,21 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
-	"os"
+	"text/template"
 )
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("<h1>Hello World!</h1>"))
+	tpl, _ := template.ParseFiles("index.html")
+	tpl.Execute(w, nil)
 }
-
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "3000"
-	}
-
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":"+port, mux)
+	http.HandleFunc("/", indexHandler)
+	fs_css := http.FileServer(http.Dir("css"))
+	http.Handle("/css/", http.StripPrefix("/css/", fs_css))
+	fs_image := http.FileServer(http.Dir("image"))
+	http.Handle("/image/", http.StripPrefix("/image/", fs_image))
+	fmt.Println("Server is listening...")
+	http.ListenAndServe(":8181", nil)
 }
