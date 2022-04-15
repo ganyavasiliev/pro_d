@@ -1,3 +1,3 @@
-module github.com/ganyavasiliev/pro_d
+module main.go
 
 go 1.18

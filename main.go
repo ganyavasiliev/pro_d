@@ -1,21 +1,34 @@
 package main
 
 import (
-	"fmt"
+	"bytes"
 	"net/http"
+	"os"
 	"text/template"
 )
 
+var tpl = template.Must(template.ParseFiles("index.html"))
+
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tpl, _ := template.ParseFiles("index.html")
-	tpl.Execute(w, nil)
+	buf := &bytes.Buffer{}
+	err := tpl.Execute(buf, nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	buf.WriteTo(w)
 }
+
 func main() {
-	http.HandleFunc("/", indexHandler)
-	fs_css := http.FileServer(http.Dir("css"))
-	http.Handle("/css/", http.StripPrefix("/css/", fs_css))
-	fs_image := http.FileServer(http.Dir("image"))
-	http.Handle("/image/", http.StripPrefix("/image/", fs_image))
-	fmt.Println("Server is listening...")
-	http.ListenAndServe(":8181", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	fs := http.FileServer(http.Dir("assets"))
+
+	mux := http.NewServeMux()
+	mux.Handle("/assets/", http.StripPrefix("/assets/", fs))
+	mux.HandleFunc("/", indexHandler)
+	http.ListenAndServe(":"+port, mux)
 }
