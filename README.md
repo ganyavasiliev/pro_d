@@ -11,6 +11,7 @@
 ### Запуск:
 * git clone https://github.com/ganyavasiliev/pro_d.git
 * go mod tidy - Скачать зависиости
+* запyстить indеx.html
 ...
 
 ## Roadmap:
