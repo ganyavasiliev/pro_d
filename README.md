@@ -9,10 +9,10 @@
 * Git
 
 ### Запуск:
-* 'git clone https://github.com/ganyavasiliev/pro_d.git'
+* `git clone https://github.com/ganyavasiliev/pro_d.git`
 * Запyстить на терминале manage.py в VSC
-* На виндовс - ...\> 'py manage.py runserver'
-* На Linux/macOS - $ 'python manage.py runserver'
+* На виндовс - ...\> `py manage.py runserver`
+* На Linux/macOS - $ `python manage.py runserver`
 
 ## Roadmap:
 ### MVP
